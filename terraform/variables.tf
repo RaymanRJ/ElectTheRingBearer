@@ -3,8 +3,18 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "domain_name" {
-  description = "Domain name for the website"
-  default     = "electtheringbearer.com"
+variable "stack_name" {
+  description = "Name of the stack"
+  default     = "electtheringbearer"
 }
 
+variable "default_tags" {
+  description = "Default tags for AWS resources"
+  type        = map(string)
+  default = {
+    Environment = "Production"
+    Owner       = "Rayman Jamal"
+    Project     = "Elect The Ring Bearer"
+    ManagedBy   = "Terraform"
+  }
+}

@@ -10,6 +10,7 @@ locals{
     domain_name = "${var.stack_name}.com"
     origin_id = "S3Origin"
     logging_bucket = "etrb-logging-bucket"
+    validation_options = tolist(aws_acm_certificate.etrb_certificate.domain_validation_options)
 }
 
 resource "aws_cloudfront_origin_access_control" "etrb_oac" {
@@ -55,54 +56,24 @@ data "aws_iam_policy_document" "allow_access_from_cloudfront" {
   }
 }
 
-# resource "aws_s3_bucket_policy" "etrb_bucket_policy"{
-#   bucket = aws_s3_bucket.etrb_bucket.id
-  
-#   policy = <<EOF
-# {
-#   "Version": "2012-10-17",
-#   "Statement": [
-#     {
-#       "Sid": "AllowCloudFrontLogging",
-#       "Effect": "Allow",
-#       "Principal": {
-#         "Service": "cloudfront.amazonaws.com"
-#       },
-#       "Action": "s3:PutObject",
-#       "Resource": "arn:aws:s3:::${var.stack_name}/*",
-#       "Condition": {
-#         "StringEquals": {
-#           "s3:x-amz-acl": "bucket-owner-full-control"
-#         }
-#       }
-#     }
-#   ]
-# }
-# EOF
-# }
 
 resource "aws_cloudfront_distribution" "etrb_distribution" {
-    origin {
+  origin {
     domain_name              = aws_s3_bucket.etrb_bucket.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.etrb_oac.id
     origin_id                = local.origin_id
   }
 
+  aliases = ["${local.domain_name}"]
   enabled = true
+  default_root_object      = "index.html"
   is_ipv6_enabled = true
-
-  # logging_config {
-  #   bucket = aws_s3_bucket.etrb_bucket.bucket_domain_name
-  #   prefix = "cloudfront-logs"
-  # }
-
-  # aliases = ["${local.domain_name}"]
 
   default_cache_behavior {
     allowed_methods = ["GET", "HEAD", "OPTIONS"]
     cached_methods  = ["GET", "HEAD", "OPTIONS"]
     target_origin_id = local.origin_id 
-    viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "redirect-to-https"
 
     forwarded_values {
       query_string = false
@@ -122,7 +93,37 @@ resource "aws_cloudfront_distribution" "etrb_distribution" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = aws_acm_certificate.etrb_certificate.arn
+    cloudfront_default_certificate = false
+    minimum_protocol_version = "TLSv1.2_2021"
+    ssl_support_method = "sni-only"
   }
 
+}
+
+resource "aws_route53_zone" "etrb_zone" {
+  name = local.domain_name
+}
+
+resource "aws_acm_certificate" "etrb_certificate" {
+  domain_name       = local.domain_name
+  validation_method = "DNS"
+  
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_route53_record" "cert_validation" {
+  zone_id = aws_route53_zone.etrb_zone.zone_id
+  name    = local.validation_options[0].resource_record_name
+  type    = local.validation_options[0].resource_record_type
+  records = [local.validation_options[0].resource_record_value]
+  ttl     = 300
+}
+
+resource "aws_acm_certificate_validation" "cert_validation" {
+  certificate_arn         = aws_acm_certificate.etrb_certificate.arn
+  validation_record_fqdns = [aws_route53_record.cert_validation.fqdn]
 }

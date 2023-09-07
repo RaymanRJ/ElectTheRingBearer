@@ -1,38 +1,63 @@
-.App {
+/* src/App.css */
+
+body {
+  background-color: #f4f1de;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+div {
   text-align: center;
+  margin-top: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Style for the welcome message */
+div > div {
+  font-size: 2em;
+  background-color: #DC824F;
+  color: #f4f1de;
+  padding: 20px;
+  border: 2px solid #2a9d8f;
+  cursor: pointer;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Style for input box and buttons */
+input, button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+input {
+  width: 200px;
 }
 
-.App-link {
-  color: #61dafb;
+button {
+  background-color: #264653;
+  color: #f4f1de;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button:hover {
+  background-color: #2a9d8f;
+  color: #f4f1de;
+}
+
+/* Style for list and bearer */
+ul {
+  list-style: none;
+}
+
+li {
+  margin: 10px;
+  font-size: 1.2em;
+}
+
+p {
+  font-size: 1.5em;
+  color: #e76f51;
+}
+
+body {
+  background-color: black;
 }

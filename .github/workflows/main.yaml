@@ -44,11 +44,9 @@ jobs:
 
   #     - name: 'Terraform Apply'
   #       run: terraform apply -auto-approve -input=false
-
   frontend:
     name: 'Frontend'
     runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, 'frontend') || contains(toJSON(github.event.commits.*.modified), 'frontend/')"
     
     steps:
       - name: 'Checkout'
@@ -61,12 +59,30 @@ jobs:
 
       - name: 'Install Dependencies'
         run: npm install
-        working-directory: './frontend'
+        working-directory: './front-end'
         
       - name: 'Run Tests'
         run: npm test
-        working-directory: './frontend'
+        working-directory: './front-end'
 
       - name: 'Build'
         run: npm run build
-        working-directory: './frontend'
+        working-directory: './front-end'
+        
+      # Configure AWS Credentials
+      - name: 'Configure AWS Credentials'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+        
+      # Deploy to S3
+      - name: 'Deploy to S3'
+        run: |
+          aws s3 sync ./front-end/build/ s3://electtheringbearer
+      
+      # Invalidate CloudFront Distribution
+      - name: 'Invalidate CloudFront Distribution'
+        run: |
+          aws cloudfront create-invalidation --distribution-id E2AECVSE5890EZ --paths "/*"

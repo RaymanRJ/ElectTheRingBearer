@@ -27,6 +27,7 @@ import './App.css';
   );
   
 const App = () => {
+  const timeoutDelay = 1000;
   const [welcome, setWelcome] = useState(false);
   const [candidates, setCandidates] = useState([]);
   const [inputValue, setInputValue] = useState("");
@@ -43,7 +44,7 @@ const App = () => {
     
     if (!lastVisit || (now - lastVisit > 600000)) {
       setWelcome(true);
-      const timer = setTimeout(() => setWelcome(false), 3000);
+      const timer = setTimeout(() => setWelcome(false), timeoutDelay * 3);
       const hideWelcome = () => setWelcome(false);
       document.addEventListener('click', hideWelcome);
       return () => {
@@ -88,16 +89,17 @@ const App = () => {
       setRotating(false);  // Stop the animation
       setShowPopup(false);  // Hide the popup after a delay
       displayBearer();  // Display the popup after a delay
-    }, 2000);  // 2 seconds delay
+    }, timeoutDelay);
   };
 
   const displayBearer = () => {
     const randomIndex = Math.floor(Math.random() * candidates.length);
     setBearer(candidates[randomIndex]);
+    setShowBearerName(true);
     setShowPopup(true)
     setTimeout(() => {
       setShowPopup(false);
-    }, 2000);  // 2 seconds delay
+    }, timeoutDelay);
   };
 
   return (

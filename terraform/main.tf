@@ -64,7 +64,7 @@ resource "aws_cloudfront_distribution" "etrb_distribution" {
     origin_id                = local.origin_id
   }
 
-  aliases = ["${local.domain_name}"]
+  aliases = ["${local.domain_name}", "www.${local.domain_name}"]
   enabled = true
   default_root_object      = "index.html"
   is_ipv6_enabled = true
@@ -108,6 +108,8 @@ resource "aws_route53_zone" "etrb_zone" {
 resource "aws_acm_certificate" "etrb_certificate" {
   domain_name       = local.domain_name
   validation_method = "DNS"
+  subject_alternative_names = ["www.${local.domain_name}"]
+
   
 
   lifecycle {
@@ -123,7 +125,12 @@ resource "aws_route53_record" "cert_validation" {
   ttl     = 300
 }
 
-resource "aws_acm_certificate_validation" "cert_validation" {
+# resource "aws_acm_certificate_validation" "cert_validation" {
+#   certificate_arn         = aws_acm_certificate.etrb_certificate.arn
+#   validation_record_fqdns = [aws_route53_record.cert_validation.fqdn]
+# }
+
+resource "aws_acm_certificate_validation" "etrb_certificate_validation" {
   certificate_arn         = aws_acm_certificate.etrb_certificate.arn
-  validation_record_fqdns = [aws_route53_record.cert_validation.fqdn]
+  validation_record_fqdns = [for record in aws_acm_certificate.etrb_certificate.domain_validation_options : record.resource_record_name]
 }

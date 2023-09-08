@@ -1,63 +1,200 @@
-/* src/App.css */
-
+/* Base Styling */
 body {
-  background-color: #f4f1de;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Times New Roman', Times, serif;
+  background-color: #f4e9d8; /* Parchment-like background */
+  color: #3d2918; /* Deep brown for text */
+  margin: 0;
+  padding: 0;
 }
 
+/* Main App Container - No inner box */
 div {
-  text-align: center;
-  margin-top: 20px;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: transparent; /* No background to avoid a boxed appearance */
+  border: none; /* No border */
 }
 
-/* Style for the welcome message */
-div > div {
-  font-size: 2em;
-  background-color: #DC824F;
-  color: #f4f1de;
-  padding: 20px;
-  border: 2px solid #2a9d8f;
-  cursor: pointer;
-}
-
-/* Style for input box and buttons */
-input, button {
-  padding: 10px;
-  margin: 5px;
-  font-size: 1em;
+/* Buttons */
+button {
+  background-color: #7b6c49; /* Earthy greenish-brown */
+  color: white;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
   border: none;
   border-radius: 5px;
-}
-
-input {
-  width: 200px;
-}
-
-button {
-  background-color: #264653;
-  color: #f4f1de;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #2a9d8f;
-  color: #f4f1de;
+  background-color: #6b5c39; /* Darker shade for hover */
 }
 
-/* Style for list and bearer */
+button:disabled {
+  background-color: #a8a190; /* Grayed out look for disabled button */
+  cursor: not-allowed;
+}
+
+/* Input Fields */
+input[type="text"] {
+  padding: 0.5rem;
+  border: 1px solid #3d2918;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+/* List of Candidates */
 ul {
-  list-style: none;
+  list-style-type: none;
+  padding: 0;
 }
 
 li {
-  margin: 10px;
-  font-size: 1.2em;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed #3d2918;
 }
 
-p {
-  font-size: 1.5em;
-  color: #e76f51;
+li:last-child {
+  border-bottom: none;
 }
 
-body {
+/* Popup Styling */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;  /* Ensuring the popup takes the full viewport width */
+  bottom: 0; /* Ensuring the popup takes the full viewport height */
+  width: 100%; /* Cover full viewport width */
+  height: 100%; /* Cover full viewport height */
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup img {
+  max-width: 70%;
+  max-height: 70%;
+}
+
+/* Styling for the bearer name */
+.bearer-name {
+  position: fixed;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  z-index: 1010;
+  color: red;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   background-color: black;
+  padding: 10px 20px;
+}
+
+.quote-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white for contrast */
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quote-section h1 {
+  font-size: 2.5rem;  /* Slightly larger for emphasis */
+  color: #3d2918;    /* Deep brown */
+  margin: 0;
+}
+
+.quote-section p, 
+.quote-section small {
+  text-align: right;  /* Align text to the right side of the container */
+  width: 100%;        /* Ensures the alignment takes the full container width */
+}
+
+.quote-section p {
+  font-size: 2rem;
+  color: #5b4a29;
+  margin: 0.5rem 0;
+}
+
+.quote-section small {
+  font-size: 1rem;
+  color: #a89f91;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+
+.blurb-section {
+  text-align: justify;  /* For clean, aligned paragraphs */
+  margin: 1rem 2rem;    /* Spacing around the blurb */
+  background-color: rgba(255, 255, 255, 0.8); /* Slight transparency for a parchment-like effect */
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.blurb-section p {
+  font-size: 1.2rem;  /* A slightly larger than standard font size for readability */
+  color: #3d2918;    /* Deep brown for that earthy Middle-Earth feel */
+  line-height: 1.5;  /* Giving space between lines for better readability */
+}
+
+.instruction-section {
+  margin: 1rem 2rem;
+  background-color: rgba(255, 255, 255, 0.8); /* Maintaining that parchment-like effect */
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.instruction-section h2 {
+  font-size: 1.5rem; /* A slightly emphasized heading for the instruction section */
+  color: #3d2918;    /* Consistent deep brown color */
+  margin-bottom: 1rem; /* Giving some space before the list starts */
+}
+
+.instruction-section ol {
+  padding-left: 1.5rem; /* Some padding for ordered list */
+}
+
+.instruction-section li {
+  font-size: 1.1rem;   /* Making sure the instruction text is clear and readable */
+  color: #5b4a29;     /* A bit lighter brown for the instructions */
+  margin-bottom: 0.5rem; /* Some spacing between instruction points */
+}
+
+/* Hover effect for li elements for a better UX. */
+li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+/* Rotating animation for the list items */
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(-15deg);
+  }
+}
+
+.rotating {
+  animation: rotating 0.2s infinite alternate;
+}
+
+/* Some transition effects to smooth out color changes or transforms */
+button, li {
+  transition: background-color 0.3s, transform 0.3s;
 }

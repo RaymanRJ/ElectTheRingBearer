@@ -76,6 +76,12 @@ const App = () => {
     }
   };
 
+  const deleteCandidate = (indexToDelete) => {
+    setCandidates(prevCandidates => 
+      prevCandidates.filter((_, index) => index !== indexToDelete)
+    );
+  };
+
   const electBearer = () => {
     setRotating(true);
     setTimeout(() => {
@@ -111,7 +117,10 @@ const App = () => {
           {candidates.length < 1 && (<Instructions/>)}
           <ul>
             {candidates.map((name, index) => (
-              <li key={index} className={rotating ? "rotating" : ""}>{name}</li>
+              <li key={index} className={rotating ? "rotating" : ""}>
+                {name} 
+                <button onClick={() => deleteCandidate(index)} style={{ marginLeft: '10px' }}>x</button>
+              </li>
             ))}
           </ul>
           {bearer && showBearerName && (

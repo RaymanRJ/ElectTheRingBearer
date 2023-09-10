@@ -6,6 +6,12 @@ provider "aws" {
     }
 }
 
+terraform {
+  backend "s3" {
+    key     = "elect-the-ring-bearer/terraform.tfstate"
+  }
+}
+
 locals{
     domain_name = "${var.stack_name}.com"
     origin_id = "S3Origin"

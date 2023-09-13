@@ -10,3 +10,18 @@ In the heart of Middle-Earth, when the path ahead is uncertain and the weight of
 
 Enter the names of those brave enough to bear the weight of decision, and let the Ring choose its bearer. For in this moment, as in all great tales, fate is but a click away.
 
+## Node:
+Install Node dependencies:
+```shell
+npm install
+```
+
+Run front-end:
+```shell
+npm start
+```
+
+## Terraform:
+```shell
+terraform init -backend-config=tf.conf
+```

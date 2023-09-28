@@ -131,11 +131,6 @@ resource "aws_route53_record" "cert_validation" {
   ttl     = 300
 }
 
-# resource "aws_acm_certificate_validation" "cert_validation" {
-#   certificate_arn         = aws_acm_certificate.etrb_certificate.arn
-#   validation_record_fqdns = [aws_route53_record.cert_validation.fqdn]
-# }
-
 resource "aws_acm_certificate_validation" "etrb_certificate_validation" {
   certificate_arn         = aws_acm_certificate.etrb_certificate.arn
   validation_record_fqdns = [for record in aws_acm_certificate.etrb_certificate.domain_validation_options : record.resource_record_name]

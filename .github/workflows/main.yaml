@@ -42,14 +42,14 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
         
       # Deploy to S3
       - name: 'Deploy to S3'
         run: |
-          aws s3 sync ./front-end/build/ s3://electtheringbearer
+          aws s3 sync ./frontend/build/ s3://${{ secrets.AWS_S3_BUCKET_NAME }}
       
       # Invalidate CloudFront Distribution
       - name: 'Invalidate CloudFront Distribution'
         run: |
-          aws cloudfront create-invalidation --distribution-id E2AECVSE5890EZ --paths "/*"
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"

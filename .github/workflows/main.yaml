@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'front-end/**'
+      - 'frontend/**'
 
 env:
   AWS_REGION: us-east-2
@@ -26,15 +26,15 @@ jobs:
 
       - name: 'Install Dependencies'
         run: npm install
-        working-directory: './front-end'
+        working-directory: './frontend'
         
       - name: 'Run Tests'
         run: npm test
-        working-directory: './front-end'
+        working-directory: './frontend'
 
       - name: 'Build'
         run: npm run build
-        working-directory: './front-end'
+        working-directory: './frontend'
         
       # Configure AWS Credentials
       - name: 'Configure AWS Credentials'
